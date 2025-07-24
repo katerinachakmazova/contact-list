@@ -1,0 +1,33 @@
+input {
+  display: block;
+  font-size: 15px;
+  border: 3px solid #add8e6;
+  border-radius: 10px;
+  color: #007ba7;
+}
+.input-item-container {
+  margin: 7px;
+  display: flex;
+  min-height: 30px;
+  justify-content: space-between;
+}
+.input-item-container > span {
+  display: block;
+  margin: 5px;
+  border: 2px solid #add8e6;
+  border-radius: 10px;
+  padding: 7px;
+}
+.button-container {
+  position: relative;
+  height: 40px;
+  margin: 10px;
+}
+#save {
+  position: absolute;
+  left: 10px;
+}
+#delete {
+  position: absolute;
+  right: 10px;
+}
