@@ -11,13 +11,7 @@ input {
   min-height: 30px;
   justify-content: space-between;
 }
-.input-item-container > span {
-  display: block;
-  margin: 5px;
-  border: 2px solid #add8e6;
-  border-radius: 10px;
-  padding: 7px;
-}
+
 .button-container {
   position: relative;
   height: 40px;
@@ -25,9 +19,9 @@ input {
 }
 #save {
   position: absolute;
-  left: 10px;
+  left:0px;
 }
 #delete {
   position: absolute;
-  right: 10px;
+  right: 0px;
 }

@@ -22,3 +22,11 @@ button {
 button :hover {
   border: 1px solid #007ba7;
 }
+
+span {
+  display: block;
+  margin: 5px;
+  border: 2px solid #add8e6;
+  border-radius: 10px;
+  padding: 7px;
+}
