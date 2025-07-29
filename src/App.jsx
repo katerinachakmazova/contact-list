@@ -6,15 +6,22 @@ import Form from './components/Form/Form';
 
 export class App extends Component {
   state = {
-    contacts: JSON.parse(localStorage.getItem('contacts')) || [],
-    currentContact: {
-      fName: '',
-      lName: '',
-      email: '',
-      phone: '',
-    },
+    contacts: [],
+    currentContact: this.clearCurrentContact()
   };
-
+    componentDidMount () {
+    const contacts = JSON.parse(localStorage.getItem('contacts'))
+    if(!contacts){
+      this.setState({
+        contacts: [],
+      })
+    }
+    else{
+      this.setState({
+        contacts: [...contacts]
+      })
+    }
+  }
   deleteContact = (id) => {
     this.setState((state) => {
       const contacts = state.contacts.filter((contact) => contact.id !== id);
@@ -43,7 +50,7 @@ export class App extends Component {
   };
   updateContact = (contact) => {
     this.setState((state) => {
-      const contacts = this.state.contacts.map((item) =>
+      const contacts = state.contacts.map((item) =>
         contact.id === item.id ? contact : item
       );
       this.saveContacts(contacts);
@@ -65,14 +72,13 @@ export class App extends Component {
   };
   newContact = () => {
     this.setState({
-      currentContact: {
-        fName: '',
-        lName: '',
-        email: '',
-        phone: '',
-      },
+      currentContact: this.clearCurrentContact()
     });
   };
+
+  clearCurrentContact () {
+    return {};
+  }
   saveContacts = (contacts) => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
   };

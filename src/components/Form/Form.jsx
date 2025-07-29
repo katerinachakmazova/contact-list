@@ -18,9 +18,10 @@ export class Form extends Component {
       id: null,
     });
   };
-  onClear = (fieldName) => {
+  onClear = (event) => {
+    const input = event.target.previousSibling;
     this.setState({
-      [fieldName]: '',
+      [input.name]: '',
     });
   };
   onInputChange = (event) => {
@@ -54,7 +55,7 @@ export class Form extends Component {
               onChange={this.onInputChange}
               value={this.state.fName}
             />
-            <span onClick={() => this.onClear('fName')}>X</span>
+            <span onClick={this.onClear}>X</span>
           </div>
           <div className='input-item-container'>
             <input
@@ -64,7 +65,7 @@ export class Form extends Component {
               onChange={this.onInputChange}
               value={this.state.lName}
             />
-            <span onClick={() => this.onClear('lName')}>X</span>
+            <span onClick={this.onClear}>X</span>
           </div>
           <div className='input-item-container'>
             <input
@@ -74,7 +75,7 @@ export class Form extends Component {
               onChange={this.onInputChange}
               value={this.state.email}
             />
-            <span onClick={() => this.onClear('email')}>X</span>
+            <span onClick={this.onClear}>X</span>
           </div>
           <div className='input-item-container'>
             <input
@@ -84,7 +85,7 @@ export class Form extends Component {
               onChange={this.onInputChange}
               value={this.state.phone}
             />
-            <span onClick={() => this.onClear('phone')}>X</span>
+            <span onClick={this.onClear}>X</span>
           </div>
         </div>
         <div className='button-container'>
