@@ -1,107 +1,84 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { nanoid } from 'nanoid';
 import List from './components/List/List';
 import Form from './components/Form/Form';
 
-export class App extends Component {
-  state = {
-    contacts: [],
-    currentContact: this.clearCurrentContact()
-  };
-    componentDidMount () {
-    const contacts = JSON.parse(localStorage.getItem('contacts'))
-    if(!contacts){
-      this.setState({
-        contacts: [],
-      })
-    }
-    else{
-      this.setState({
-        contacts: [...contacts]
-      })
+function App() {
+  const [arrContacts, setArrContacts] = useState([]);
+  const [currentContact, setCurrentContact] = useState(
+    () => clearCurrentContact
+  );
+
+  useEffect(getContactsFromStorage, []);
+  function getContactsFromStorage() {
+    const contacts = JSON.parse(localStorage.getItem('contacts'));
+    if (contacts) {
+      setArrContacts(contacts);
     }
   }
-  deleteContact = (id) => {
-    this.setState((state) => {
-      const contacts = state.contacts.filter((contact) => contact.id !== id);
-      this.saveContacts(contacts);
-      return {
-        contacts,
-      };
-    });
+  const deleteContact = (id) => {
+    const contacts = arrContacts.filter((contact) => contact.id !== id);
+    setArrContacts(contacts);
+    saveContacts(contacts);
   };
-  saveContact = (contact) => {
+  const saveContact = (contact) => {
     if (!contact.id) {
-      this.addContact(contact);
+      addContact(contact);
     } else {
-      this.updateContact(contact);
+      updateContact(contact);
     }
   };
-  addContact = (newContact) => {
+  const addContact = (newContact) => {
     newContact.id = nanoid();
-    this.setState((state) => {
-      const contacts = [...state.contacts, newContact];
-      this.saveContacts(contacts);
-      return {
-        contacts,
-      };
+    const contacts = [...arrContacts, newContact];
+    setArrContacts(contacts);
+    saveContacts(contacts);
+  };
+  const updateContact = (contact) => {
+    const contacts = arrContacts.map((item) =>
+      contact.id === item.id ? contact : item
+    );
+    setArrContacts(contacts);
+    saveContacts(contacts);
+  };
+  const transferContact = (contact) => {
+    setCurrentContact({
+      fName: contact.fName,
+      lName: contact.lName,
+      email: contact.email,
+      phone: contact.phone,
+      id: contact.id,
     });
   };
-  updateContact = (contact) => {
-    this.setState((state) => {
-      const contacts = state.contacts.map((item) =>
-        contact.id === item.id ? contact : item
-      );
-      this.saveContacts(contacts);
-      return {
-        contacts,
-      };
-    });
-  };
-  transferContact = (contact) => {
-    this.setState({
-      currentContact: {
-        fName: contact.fName,
-        lName: contact.lName,
-        email: contact.email,
-        phone: contact.phone,
-        id: contact.id,
-      },
-    });
-  };
-  newContact = () => {
-    this.setState({
-      currentContact: this.clearCurrentContact()
-    });
+  const newContact = () => {
+    setCurrentContact(() => clearCurrentContact());
   };
 
-  clearCurrentContact () {
+  function clearCurrentContact() {
     return {};
   }
-  saveContacts = (contacts) => {
+  const saveContacts = (contacts) => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
   };
-  render() {
-    return (
-      <>
-        <div className='block-container'>
-          <List
-            contacts={this.state.contacts}
-            onDelete={this.deleteContact}
-            transferContact={this.transferContact}
-          />
-          <button onClick={this.newContact}>New</button>
-        </div>
-        <Form
-          onDelete={this.deleteContact}
-          onSave={this.saveContact}
-          key={this.state.currentContact.id}
-          currentContact={this.state.currentContact}
+  return (
+    <>
+      <div className='block-container'>
+        <List
+          contacts={arrContacts}
+          onDelete={deleteContact}
+          transferContact={transferContact}
         />
-      </>
-    );
-  }
+        <button onClick={newContact}>New</button>
+      </div>
+      <Form
+        onDelete={deleteContact}
+        onSave={saveContact}
+        key={currentContact.id}
+        currentContactFromApp={currentContact}
+      />
+    </>
+  );
 }
 
 export default App;
