@@ -1,19 +1,27 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import './Form.css';
 function Form({ currentContactFromApp, onDelete, onSave }) {
-  const [currentContact, setCurrentContact] = useState({});
-  useEffect(() => {setCurrentContact(currentContactFromApp)}, [currentContactFromApp]);
+  const clearCurrentContact = () => {
+    return {
+      fName: '',
+      lName: '',
+      email: '',
+      phone: '',
+    };
+  };
+
+  const [currentContact, setCurrentContact] = useState(clearCurrentContact());
+
+  useEffect(() => {
+    setCurrentContact(currentContactFromApp);
+  }, [currentContactFromApp]);
   const handleDelete = () => {
     onDelete(currentContact.id);
     clearForm();
   };
   const clearForm = () => {
-    setCurrentContact({
-      fName: '',
-      lName: '',
-      email: '',
-      phone: '',
-    });
+    setCurrentContact(clearCurrentContact());
   };
   const onClear = (event) => {
     const input = event.target.previousSibling;
@@ -100,4 +108,7 @@ function Form({ currentContactFromApp, onDelete, onSave }) {
   );
 }
 
+Form.propTypes = {
+  onSave: PropTypes.func.isRequired
+}
 export default Form;

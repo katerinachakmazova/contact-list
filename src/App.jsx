@@ -6,9 +6,7 @@ import Form from './components/Form/Form';
 
 function App() {
   const [arrContacts, setArrContacts] = useState([]);
-  const [currentContact, setCurrentContact] = useState(
-    () => clearCurrentContact
-  );
+  const [currentContact, setCurrentContact] = useState(clearCurrentContact());
 
   useEffect(getContactsFromStorage, []);
   function getContactsFromStorage() {
@@ -56,7 +54,13 @@ function App() {
   };
 
   function clearCurrentContact() {
-    return {};
+    return {
+      fName: '',
+      lName: '',
+      email: '',
+      phone: '',
+      id: NaN,
+    };
   }
   const saveContacts = (contacts) => {
     localStorage.setItem('contacts', JSON.stringify(contacts));

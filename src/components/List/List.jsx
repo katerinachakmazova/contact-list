@@ -1,4 +1,5 @@
 import ListItem from '../ListItem/ListItem';
+import PropTypes from 'prop-types';
 import './List.css';
 function List({ contacts, onDelete, transferContact }) {
   return (
@@ -15,5 +16,12 @@ function List({ contacts, onDelete, transferContact }) {
     </div>
   );
 }
+List.propTypes = {
+  contacts: PropTypes.array,
 
+}
+
+List.defaultProps = {
+  contacts: []
+}
 export default List;
