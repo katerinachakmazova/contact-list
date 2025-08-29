@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import { nanoid } from 'nanoid';
+import api from './api/contacts-service.js';
 import List from './components/List/List';
 import Form from './components/Form/Form';
 
@@ -10,15 +11,17 @@ function App() {
 
   useEffect(getContactsFromStorage, []);
   function getContactsFromStorage() {
-    const contacts = JSON.parse(localStorage.getItem('contacts'));
-    if (contacts) {
-      setArrContacts(contacts);
-    }
+    api.get('/').then(({ data }) => {
+      if (data) {
+        setArrContacts(data);
+      }
+    });
   }
   const deleteContact = (id) => {
+    api.delete(`/${id}`);
     const contacts = arrContacts.filter((contact) => contact.id !== id);
     setArrContacts(contacts);
-    saveContacts(contacts);
+    newContact();
   };
   const saveContact = (contact) => {
     if (!contact.id) {
@@ -29,16 +32,18 @@ function App() {
   };
   const addContact = (newContact) => {
     newContact.id = nanoid();
-    const contacts = [...arrContacts, newContact];
-    setArrContacts(contacts);
-    saveContacts(contacts);
+    api.post('/', newContact).then(({ data }) => {
+      const contacts = [...arrContacts, newContact];
+      setArrContacts(contacts);
+    });
   };
   const updateContact = (contact) => {
-    const contacts = arrContacts.map((item) =>
-      contact.id === item.id ? contact : item
-    );
-    setArrContacts(contacts);
-    saveContacts(contacts);
+    api.put(`/${contact.id}`, contact).then(({ data }) => {
+      const contacts = arrContacts.map((item) =>
+        data.id === item.id ? data : item
+      );
+      setArrContacts(contacts);
+    });
   };
   const transferContact = (contact) => {
     setCurrentContact({
@@ -59,12 +64,8 @@ function App() {
       lName: '',
       email: '',
       phone: '',
-      id: NaN,
     };
   }
-  const saveContacts = (contacts) => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  };
   return (
     <>
       <div className='block-container'>
@@ -78,7 +79,6 @@ function App() {
       <Form
         onDelete={deleteContact}
         onSave={saveContact}
-        key={currentContact.id}
         currentContactFromApp={currentContact}
       />
     </>
