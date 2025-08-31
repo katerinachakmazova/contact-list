@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import './Form.css';
 function Form({ currentContactFromApp, onDelete, onSave }) {
   const clearCurrentContact = () => {
@@ -108,7 +107,4 @@ function Form({ currentContactFromApp, onDelete, onSave }) {
   );
 }
 
-Form.propTypes = {
-  onSave: PropTypes.func.isRequired
-}
 export default Form;

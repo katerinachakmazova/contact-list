@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { nanoid } from 'nanoid';
 import api from './api/contacts-service.js';
 import List from './components/List/List';
 import Form from './components/Form/Form';
@@ -17,11 +16,15 @@ function App() {
       }
     });
   }
-  const deleteContact = (id) => {
-    api.delete(`/${id}`);
-    const contacts = arrContacts.filter((contact) => contact.id !== id);
-    setArrContacts(contacts);
-    newContact();
+  const deleteContact = async (id) => {
+    try {
+      await api.delete(`/${id}`);
+      const contacts = arrContacts.filter((contact) => contact.id !== id);
+      setArrContacts(contacts);
+      newContact();
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   const saveContact = (contact) => {
     if (!contact.id) {
@@ -30,20 +33,25 @@ function App() {
       updateContact(contact);
     }
   };
-  const addContact = (newContact) => {
-    newContact.id = nanoid();
-    api.post('/', newContact).then(({ data }) => {
-      const contacts = [...arrContacts, newContact];
+  const addContact = async (newContact) => {
+    try {
+      const { data } = await api.post('/', newContact);
+      const contacts = [...arrContacts, data];
       setArrContacts(contacts);
-    });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
-  const updateContact = (contact) => {
-    api.put(`/${contact.id}`, contact).then(({ data }) => {
+  const updateContact = async (contact) => {
+    try {
+      const { data } = await api.put(`/${contact.id}`, contact);
       const contacts = arrContacts.map((item) =>
         data.id === item.id ? data : item
       );
       setArrContacts(contacts);
-    });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   const transferContact = (contact) => {
     setCurrentContact({

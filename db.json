@@ -1,5 +1,11 @@
 {
   "contacts": [
-
+    {
+      "fName": "elena",
+      "lName": "acne-cure",
+      "email": "fgg@hfm",
+      "phone": "",
+      "id": 1
+    }
   ]
 }
