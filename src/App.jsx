@@ -23,7 +23,7 @@ function App() {
       setArrContacts(contacts);
       newContact();
     } catch (error) {
-      console.log(error.message);
+      console.error(error.message);
     }
   };
   const saveContact = (contact) => {
@@ -39,7 +39,7 @@ function App() {
       const contacts = [...arrContacts, data];
       setArrContacts(contacts);
     } catch (error) {
-      console.log(error.message);
+      console.error(error.message);
     }
   };
   const updateContact = async (contact) => {
@@ -50,7 +50,7 @@ function App() {
       );
       setArrContacts(contacts);
     } catch (error) {
-      console.log(error.message);
+      console.error(error.message);
     }
   };
   const transferContact = (contact) => {
