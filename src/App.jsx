@@ -8,13 +8,18 @@ function App() {
   const [arrContacts, setArrContacts] = useState([]);
   const [currentContact, setCurrentContact] = useState(clearCurrentContact());
 
-  useEffect(getContactsFromStorage, []);
-  function getContactsFromStorage() {
-    api.get('/').then(({ data }) => {
+  useEffect(() => {
+    getContactsFromStorage();
+  }, []);
+  async function getContactsFromStorage() {
+    try {
+      const { data } = await api.get('/');
       if (data) {
         setArrContacts(data);
       }
-    });
+    } catch (error) {
+      console.log(error.message);
+    }
   }
   const deleteContact = async (id) => {
     try {
