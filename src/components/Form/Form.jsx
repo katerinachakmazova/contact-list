@@ -1,6 +1,14 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import {
+  deleteContact,
+  addContact,
+  updateContact,
+} from '../../store/actions/contactsActions';
+import api from '../../api/contacts-service';
 import './Form.css';
-function Form({ currentContactFromApp, onDelete, onSave }) {
+function Form({ currentContactFromApp }) {
+  const dispatch = useDispatch();
   const clearCurrentContact = () => {
     return {
       fName: '',
@@ -15,9 +23,15 @@ function Form({ currentContactFromApp, onDelete, onSave }) {
   useEffect(() => {
     setCurrentContact(currentContactFromApp);
   }, [currentContactFromApp]);
-  const handleDelete = () => {
-    onDelete(currentContact.id);
-    clearForm();
+
+  const handleDelete = async () => {
+    try {
+      await api.delete(`/${currentContact.id}`);
+      dispatch(deleteContact(currentContact.id));
+      clearForm();
+    } catch (error) {
+      console.error(error.message);
+    }
   };
   const clearForm = () => {
     setCurrentContact(clearCurrentContact());
@@ -35,17 +49,20 @@ function Form({ currentContactFromApp, onDelete, onSave }) {
       [event.target.name]: event.target.value,
     });
   };
-  const onFormSubmit = (event) => {
+  const onFormSubmit = async (event) => {
     event.preventDefault();
-    onSave({
-      fName: currentContact.fName,
-      lName: currentContact.lName,
-      email: currentContact.email,
-      phone: currentContact.phone,
-      id: currentContact.id,
-    });
-    if (!currentContact.id) {
-      clearForm();
+    try {
+      if (!currentContact.id){
+       const {data} = await api.post('/', currentContact);
+       dispatch(addContact(data));
+       clearForm();
+      }
+      else {
+        const {data} = await api.put(`/${currentContact.id}`, currentContact);
+        dispatch(updateContact(data))
+      }
+    } catch (error) {
+      console.error(error.message)
     }
   };
 

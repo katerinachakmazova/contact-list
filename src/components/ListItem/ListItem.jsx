@@ -1,9 +1,12 @@
 import { useDispatch } from 'react-redux';
 import { deleteContact } from '../../store/actions/contactsActions';
-import api from './api/contacts-service.js';
+import api from '../../api/contacts-service';
 import './ListItem.css';
-function ListItem({ contact, transferContact }) {
+import { ContactContext } from '../../context';
+import { useContext } from 'react';
+function ListItem({ contact }) {
   const dispatch = useDispatch();
+  const {transferContact} = useContext(ContactContext)
   async function onDelete(id) {
     try {
       await api.delete(`/${id}`);

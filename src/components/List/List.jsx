@@ -1,10 +1,11 @@
 import ListItem from '../ListItem/ListItem';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getContacts } from '../../store/actions/contactsActions';
-import api from './api/contacts-service.js';
+import api from '../../api/contacts-service';
 import './List.css';
-function List({ transferContact }) {
+function List() {
+  const contacts = useSelector((state) => state.contacts)
   const dispatch = useDispatch();
   async function getContactsFromStorage() {
     try {
@@ -24,7 +25,6 @@ function List({ transferContact }) {
         <ListItem
           key={contact.id}
           contact={contact}
-          transferContact={transferContact}
         />
       ))}
     </div>

@@ -17,7 +17,7 @@ export function addContact (contact) {
     payload: contact
   }
 }
-export function updateContactContact (contact) {
+export function updateContact (contact) {
     return {
     type: ACTION_TYPES.UPDATE_CONTACT,
     payload: contact
