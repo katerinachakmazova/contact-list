@@ -32,7 +32,7 @@ function Form() {
     } else {
       clearForm();
     }
-  }, [currentId, contacts]);
+  }, [currentId]);
 
   const handleDelete = async () => {
     try {
