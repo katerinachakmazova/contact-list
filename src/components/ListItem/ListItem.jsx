@@ -6,11 +6,12 @@ import { ContactContext } from '../../context';
 import { useContext } from 'react';
 function ListItem({ contact }) {
   const dispatch = useDispatch();
-  const {transferContact} = useContext(ContactContext)
+  const {setCurrentId} = useContext(ContactContext)
   async function onDelete(id) {
     try {
       await api.delete(`/${id}`);
       dispatch(deleteContact(id));
+      setCurrentId(null);
     } catch (error) {
       console.error(error.message);
     }
@@ -18,7 +19,7 @@ function ListItem({ contact }) {
   const { fName, lName, id } = contact;
   return (
     <div className='list-item'>
-      <p onDoubleClick={() => transferContact(contact)}>
+      <p onDoubleClick={() => setCurrentId(id)}>
         {fName + ' ' + lName}
       </p>
       <span onClick={() => onDelete(id)}>X</span>

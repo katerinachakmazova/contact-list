@@ -5,39 +5,21 @@ import Form from './components/Form/Form';
 import { ContactContext } from './context';
 
 function App() {
-  const [currentContact, setCurrentContact] = useState(clearCurrentContact());
-
-  const transferContact = (contact) => {
-    setCurrentContact({
-      fName: contact.fName,
-      lName: contact.lName,
-      email: contact.email,
-      phone: contact.phone,
-      id: contact.id,
-    });
-  };
+  const [currentId, setCurrentId] = useState(null);
   const newContact = () => {
-    setCurrentContact(() => clearCurrentContact());
+    setCurrentId(null);
   };
-
-  function clearCurrentContact() {
-    return {
-      fName: '',
-      lName: '',
-      email: '',
-      phone: '',
-    };
-  }
   return (
     <>
       <ContactContext.Provider value = {{
-        transferContact: transferContact,
+        currentId,
+        setCurrentId: setCurrentId,
       }}>
         <div className='block-container'>
           <List/>
           <button onClick={newContact}>New</button>
         </div>
-        <Form currentContactFromApp={currentContact} />
+        <Form/>
       </ContactContext.Provider>
     </>
   );

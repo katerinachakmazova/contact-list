@@ -17,7 +17,7 @@ function List() {
   }
   useEffect(() => {
     getContactsFromStorage();
-  }, [getContacts]);
+  }, []);
   return (
     <div className='list-container'>
       <h2>Contact List</h2>

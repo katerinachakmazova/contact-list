@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteContact,
   addContact,
   updateContact,
 } from '../../store/actions/contactsActions';
+import { ContactContext } from '../../context';
+import { useContext } from 'react';
 import api from '../../api/contacts-service';
 import './Form.css';
-function Form({ currentContactFromApp }) {
+function Form() {
   const dispatch = useDispatch();
+  const { currentId } = useContext(ContactContext);
   const clearCurrentContact = () => {
     return {
       fName: '',
@@ -17,12 +20,19 @@ function Form({ currentContactFromApp }) {
       phone: '',
     };
   };
-
+  const clearForm = () => {
+    setCurrentContact(clearCurrentContact());
+  };
   const [currentContact, setCurrentContact] = useState(clearCurrentContact());
-
+  const contacts = useSelector((state) => state.contacts);
   useEffect(() => {
-    setCurrentContact(currentContactFromApp);
-  }, [currentContactFromApp]);
+    const contact = contacts.find((contact) => contact.id === currentId);
+    if (contact) {
+      setCurrentContact(contact);
+    } else {
+      clearForm();
+    }
+  }, [currentId, contacts]);
 
   const handleDelete = async () => {
     try {
@@ -32,9 +42,6 @@ function Form({ currentContactFromApp }) {
     } catch (error) {
       console.error(error.message);
     }
-  };
-  const clearForm = () => {
-    setCurrentContact(clearCurrentContact());
   };
   const onClear = (event) => {
     const input = event.target.previousSibling;
@@ -52,17 +59,16 @@ function Form({ currentContactFromApp }) {
   const onFormSubmit = async (event) => {
     event.preventDefault();
     try {
-      if (!currentContact.id){
-       const {data} = await api.post('/', currentContact);
-       dispatch(addContact(data));
-       clearForm();
-      }
-      else {
-        const {data} = await api.put(`/${currentContact.id}`, currentContact);
-        dispatch(updateContact(data))
+      if (!currentContact.id) {
+        const { data } = await api.post('/', currentContact);
+        dispatch(addContact(data));
+        clearForm();
+      } else {
+        const { data } = await api.put(`/${currentContact.id}`, currentContact);
+        dispatch(updateContact(data));
       }
     } catch (error) {
-      console.error(error.message)
+      console.error(error.message);
     }
   };
 
