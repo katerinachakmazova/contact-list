@@ -1,17 +1,14 @@
 import { useDispatch } from 'react-redux';
-import { deleteContact } from '../../store/actions/contactsActions';
+import { deleteContact, setCurrentContact, clearCurrentContact } from '../../store/actions/contactsActions';
 import api from '../../api/contacts-service';
 import './ListItem.css';
-import { ContactContext } from '../../context';
-import { useContext } from 'react';
 function ListItem({ contact }) {
   const dispatch = useDispatch();
-  const {setCurrentId} = useContext(ContactContext)
   async function onDelete(id) {
     try {
       await api.delete(`/${id}`);
       dispatch(deleteContact(id));
-      setCurrentId(null);
+      dispatch(clearCurrentContact())
     } catch (error) {
       console.error(error.message);
     }
@@ -19,7 +16,7 @@ function ListItem({ contact }) {
   const { fName, lName, id } = contact;
   return (
     <div className='list-item'>
-      <p onDoubleClick={() => setCurrentId(id)}>
+      <p onDoubleClick={() => dispatch(setCurrentContact(id))}>
         {fName + ' ' + lName}
       </p>
       <span onClick={() => onDelete(id)}>X</span>

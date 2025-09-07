@@ -1,26 +1,18 @@
-import { useState } from 'react';
+import { clearCurrentContact } from './store/actions/contactsActions';
+import { useDispatch } from 'react-redux';
 import './App.css';
 import List from './components/List/List';
 import Form from './components/Form/Form';
-import { ContactContext } from './context';
 
 function App() {
-  const [currentId, setCurrentId] = useState(null);
-  const newContact = () => {
-    setCurrentId(null);
-  };
+  const dispatch = useDispatch();
   return (
     <>
-      <ContactContext.Provider value = {{
-        currentId,
-        setCurrentId: setCurrentId,
-      }}>
         <div className='block-container'>
           <List/>
-          <button onClick={newContact}>New</button>
+          <button onClick={() => dispatch(clearCurrentContact())}>New</button>
         </div>
         <Form/>
-      </ContactContext.Provider>
     </>
   );
 }

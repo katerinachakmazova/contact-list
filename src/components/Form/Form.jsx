@@ -4,15 +4,13 @@ import {
   deleteContact,
   addContact,
   updateContact,
+  clearCurrentContact,
 } from '../../store/actions/contactsActions';
-import { ContactContext } from '../../context';
-import { useContext } from 'react';
 import api from '../../api/contacts-service';
 import './Form.css';
 function Form() {
   const dispatch = useDispatch();
-  const { currentId } = useContext(ContactContext);
-  const clearCurrentContact = () => {
+  const clearCurrentContactInForm = () => {
     return {
       fName: '',
       lName: '',
@@ -21,18 +19,16 @@ function Form() {
     };
   };
   const clearForm = () => {
-    setCurrentContact(clearCurrentContact());
+    dispatch(clearCurrentContact());
+    setCurrentContact(clearCurrentContactInForm());
   };
-  const [currentContact, setCurrentContact] = useState(clearCurrentContact());
-  const contacts = useSelector((state) => state.contacts);
+  const [currentContact, setCurrentContact] = useState(
+    clearCurrentContactInForm()
+  );
+  const contact = useSelector((state) => state.currentContact);
   useEffect(() => {
-    const contact = contacts.find((contact) => contact.id === currentId);
-    if (contact) {
-      setCurrentContact(contact);
-    } else {
-      clearForm();
-    }
-  }, [currentId]);
+    setCurrentContact(contact);
+  }, [contact]);
 
   const handleDelete = async () => {
     try {

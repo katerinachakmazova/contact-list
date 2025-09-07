@@ -23,3 +23,14 @@ export function updateContact (contact) {
     payload: contact
   }
 }
+export function setCurrentContact(id){
+  return {
+    type: ACTION_TYPES.SET_CURRENT_CONTACT,
+    payload: id,
+  }
+}
+export function clearCurrentContact(){
+  return{
+    type: ACTION_TYPES.CLEAR_CURRENT_CONTACT
+  }
+}
