@@ -8,37 +8,33 @@ import {
 } from '../../store/actions/contactsActions';
 import api from '../../api/contacts-service';
 import './Form.css';
+
 function Form() {
   const dispatch = useDispatch();
-  const clearCurrentContactInForm = () => {
-    return {
-      fName: '',
-      lName: '',
-      email: '',
-      phone: '',
-    };
-  };
-  const clearForm = () => {
-    dispatch(clearCurrentContact());
-    setCurrentContact(clearCurrentContactInForm());
-  };
-  const [currentContact, setCurrentContact] = useState(
-    clearCurrentContactInForm()
-  );
   const contact = useSelector((state) => state.currentContact);
+  const [currentContact, setCurrentContact] = useState({
+    fName: '',
+    lName: '',
+    email: '',
+    phone: '',
+  });
+
   useEffect(() => {
     setCurrentContact(contact);
   }, [contact]);
 
   const handleDelete = async () => {
     try {
-      await api.delete(`/${currentContact.id}`);
+      await api
+        .delete(`/${currentContact.id}`)
+        .then(({ statusText }) => console.log(statusText));
       dispatch(deleteContact(currentContact.id));
-      clearForm();
+      dispatch(clearCurrentContact());
     } catch (error) {
       console.error(error.message);
     }
   };
+
   const onClear = (event) => {
     const input = event.target.previousSibling;
     setCurrentContact({
@@ -46,21 +42,28 @@ function Form() {
       [input.name]: '',
     });
   };
+
   const onInputChange = (event) => {
     setCurrentContact({
       ...currentContact,
       [event.target.name]: event.target.value,
     });
   };
+
   const onFormSubmit = async (event) => {
     event.preventDefault();
     try {
       if (!currentContact.id) {
-        const { data } = await api.post('/', currentContact);
+        const { data, statusText } = await api.post('/', currentContact);
+        console.log(statusText);
         dispatch(addContact(data));
-        clearForm();
+        dispatch(clearCurrentContact());
       } else {
-        const { data } = await api.put(`/${currentContact.id}`, currentContact);
+        const { data, statusText } = await api.put(
+          `/${currentContact.id}`,
+          currentContact
+        );
+        console.log(statusText);
         dispatch(updateContact(data));
       }
     } catch (error) {
@@ -115,12 +118,11 @@ function Form() {
       <div className='button-container'>
         <button id='save'>Save</button>
         {currentContact.id ? (
-          <button onClick={handleDelete} id='delete'>
+          <button type="button" onClick={handleDelete} id='delete'>
             Delete
           </button>
-        ) : (
-          ''
-        )}
+          ) : ('')
+        }
       </div>
     </form>
   );
