@@ -5,13 +5,12 @@ import {
   addContact,
   updateContact,
   clearCurrentContact,
-} from '../../store/actions/contactsActions';
-import api from '../../api/contacts-service';
+} from '../../store/slices/contactSlices';
 import './Form.css';
 
 function Form() {
   const dispatch = useDispatch();
-  const contact = useSelector((state) => state.currentContact);
+  const contact = useSelector((state) => state.contactList.currentContact);
   const [currentContact, setCurrentContact] = useState({
     fName: '',
     lName: '',
@@ -24,15 +23,8 @@ function Form() {
   }, [contact]);
 
   const handleDelete = async () => {
-    try {
-      await api
-        .delete(`/${currentContact.id}`)
-        .then(({ statusText }) => console.log(statusText));
-      dispatch(deleteContact(currentContact.id));
-      dispatch(clearCurrentContact());
-    } catch (error) {
-      console.error(error.message);
-    }
+    dispatch(deleteContact(currentContact.id));
+    dispatch(clearCurrentContact());
   };
 
   const onClear = (event) => {
@@ -52,22 +44,11 @@ function Form() {
 
   const onFormSubmit = async (event) => {
     event.preventDefault();
-    try {
-      if (!currentContact.id) {
-        const { data, statusText } = await api.post('/', currentContact);
-        console.log(statusText);
-        dispatch(addContact(data));
-        dispatch(clearCurrentContact());
-      } else {
-        const { data, statusText } = await api.put(
-          `/${currentContact.id}`,
-          currentContact
-        );
-        console.log(statusText);
-        dispatch(updateContact(data));
-      }
-    } catch (error) {
-      console.error(error.message);
+    if (!currentContact.id) {
+      dispatch(addContact(currentContact));
+      dispatch(clearCurrentContact());
+    } else {
+      dispatch(updateContact(currentContact));
     }
   };
 
@@ -118,11 +99,12 @@ function Form() {
       <div className='button-container'>
         <button id='save'>Save</button>
         {currentContact.id ? (
-          <button type="button" onClick={handleDelete} id='delete'>
+          <button type='button' onClick={handleDelete} id='delete'>
             Delete
           </button>
-          ) : ('')
-        }
+        ) : (
+          ''
+        )}
       </div>
     </form>
   );

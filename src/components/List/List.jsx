@@ -1,27 +1,15 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ListItem from '../ListItem/ListItem';
-import { getContacts } from '../../store/actions/contactsActions';
-import api from '../../api/contacts-service';
+import { getContacts } from '../../store/slices/contactSlices';
 import './List.css';
 
 function List() {
-  const contacts = useSelector((state) => state.contacts);
+  const contacts = useSelector((state) => state.contactList.contacts);
   const dispatch = useDispatch();
   useEffect(() => {
-    getContactsFromStorage();
-  }, []);
-
-  async function getContactsFromStorage() {
-    try {
-      const response = await api.get('/');
-      dispatch(getContacts(response.data));
-      console.log(response.statusText)
-    } catch (error) {
-      console.error(error.message);
-    }
-  }
-
+    dispatch(getContacts());
+  }, [dispatch]);
   return (
     <div className='list-container'>
       <h2>Contact List</h2>

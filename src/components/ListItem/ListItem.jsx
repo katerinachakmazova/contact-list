@@ -3,29 +3,21 @@ import {
   deleteContact,
   setCurrentContact,
   clearCurrentContact,
-} from '../../store/actions/contactsActions';
-import api from '../../api/contacts-service';
+} from '../../store/slices/contactSlices';
 import './ListItem.css';
 
 function ListItem({ contact }) {
   const dispatch = useDispatch();
   const { fName, lName, id } = contact;
 
-  async function onDelete(id) {
-    try {
-      await api
-        .delete(`/${id}`)
-        .then(({ statusText }) => console.log(statusText));
-      dispatch(deleteContact(id));
-      dispatch(clearCurrentContact());
-    } catch (error) {
-      console.error(error.message);
-    }
+  function onDelete(id) {
+    dispatch(deleteContact(id));
+    dispatch(clearCurrentContact());
   }
 
   return (
     <div className='list-item'>
-      <p onDoubleClick={() => dispatch(setCurrentContact(id))}>
+      <p onDoubleClick={() => dispatch(setCurrentContact(contact))}>
         {fName + ' ' + lName}
       </p>
       <span onClick={() => onDelete(id)}>X</span>

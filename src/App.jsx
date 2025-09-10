@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import List from './components/List/List';
 import Form from './components/Form/Form';
-import { clearCurrentContact } from './store/actions/contactsActions';
+import { clearCurrentContact } from './store/slices/contactSlices';
 import './App.css';
 function App() {
   const dispatch = useDispatch();
