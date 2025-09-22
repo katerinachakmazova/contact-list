@@ -13,20 +13,12 @@
   border-radius: 10px;
   padding: 5px;
   margin: 10px;
+  max-width: 300px;
 }
-button {
-  color: #007ba7;
-  border: 1px solid #add8e6;
-  font-size: 15px;
-}
-button :hover {
-  border: 1px solid #007ba7;
-}
+
 
 span {
   display: block;
   margin: 5px;
-  border: 2px solid #add8e6;
-  border-radius: 10px;
   padding: 7px;
 }

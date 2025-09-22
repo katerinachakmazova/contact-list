@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {List as ListMui} from '@mui/material';
+import Typography from '@mui/material/Typography';
 import ListItem from '../ListItem/ListItem';
 import { getContacts } from '../../store/slices/contactSlices';
-import './List.css';
 
 function List() {
   const contacts = useSelector((state) => state.contactList.contacts);
@@ -11,12 +12,12 @@ function List() {
     dispatch(getContacts());
   }, [dispatch]);
   return (
-    <div className='list-container'>
-      <h2>Contact List</h2>
+    <ListMui >
+      <Typography variant='h4' sx={{margin: '10px 15px 5px 15px'}}>Contact List</Typography>
       {contacts.map((contact) => (
         <ListItem key={contact.id} contact={contact} />
       ))}
-    </div>
+    </ListMui>
   );
 }
 

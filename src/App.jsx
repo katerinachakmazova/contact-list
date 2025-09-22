@@ -1,17 +1,28 @@
 import { useDispatch } from 'react-redux';
+import { useRef } from 'react';
+import Button from '@mui/material/Button';
 import List from './components/List/List';
 import Form from './components/Form/Form';
 import { clearCurrentContact } from './store/slices/contactSlices';
 import './App.css';
 function App() {
   const dispatch = useDispatch();
+  const formRef = useRef(null);
+    const handleClearForm = () => {
+    if (formRef.current) {
+      formRef.current.resetForm();
+      dispatch(clearCurrentContact());
+    }
+  };
   return (
     <>
         <div className='block-container'>
           <List/>
-          <button onClick={() => dispatch(clearCurrentContact())}>New</button>
+          <Button 
+          onClick={handleClearForm}
+          variant='outlined'>New</Button>
         </div>
-        <Form/>
+        <Form formRef={formRef}/>
     </>
   );
 }

@@ -1,10 +1,14 @@
 import { useDispatch } from 'react-redux';
+import {ListItem as ListItemMui} from '@mui/material';
+import ListItemText from '@mui/material/ListItemText';
+import CancelIcon from '@mui/icons-material/Cancel';
+import IconButton from '@mui/material/IconButton';
 import {
   deleteContact,
   setCurrentContact,
   clearCurrentContact,
 } from '../../store/slices/contactSlices';
-import './ListItem.css';
+
 
 function ListItem({ contact }) {
   const dispatch = useDispatch();
@@ -16,12 +20,19 @@ function ListItem({ contact }) {
   }
 
   return (
-    <div className='list-item'>
-      <p onDoubleClick={() => dispatch(setCurrentContact(contact))}>
+    <ListItemMui 
+    divider = {true}
+    secondaryAction={
+            <IconButton aria-label="delete"
+            onClick={() => onDelete(id)}
+            >
+              <CancelIcon />
+            </IconButton>
+          }>
+      <ListItemText onDoubleClick={() => dispatch(setCurrentContact(contact))}>
         {fName + ' ' + lName}
-      </p>
-      <span onClick={() => onDelete(id)}>X</span>
-    </div>
+      </ListItemText>
+    </ListItemMui>
   );
 }
 

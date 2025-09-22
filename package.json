@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "server":"json-server -p 5000 -w db.json",
-    "start" :" concurrently \"npm run dev\" \"npm run server\"",
+    "server": "json-server -p 5000 -w db.json",
+    "start": " concurrently \"npm run dev\" \"npm run server\"",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -24,14 +24,21 @@
     "vite": "^7.0.4"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@fontsource/roboto": "^5.2.8",
+    "@mui/icons-material": "^7.3.2",
+    "@mui/material": "^7.3.2",
     "@redux-devtools/extension": "^3.3.0",
     "@reduxjs/toolkit": "^2.9.0",
     "axios": "^1.11.0",
+    "formik": "^2.4.6",
     "json-server": "^1.0.0-beta.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.2.0",
     "redux": "^5.0.1",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "yup": "^1.7.1"
   }
 }
