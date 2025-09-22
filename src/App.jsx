@@ -9,10 +9,8 @@ function App() {
   const dispatch = useDispatch();
   const formRef = useRef(null);
     const handleClearForm = () => {
-    if (formRef.current) {
       formRef.current.resetForm();
       dispatch(clearCurrentContact());
-    }
   };
   return (
     <>
