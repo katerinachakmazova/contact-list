@@ -5,13 +5,13 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Alert from '@mui/material/Alert';
-import * as yup from 'yup';
 import {
   deleteContact,
   addContact,
   updateContact,
   clearCurrentContact,
 } from '../../store/slices/contactSlices';
+import { validSchema } from '../../util/formValidSchema';
 import './Form.css';
 
 function Form({ formRef }) {
@@ -32,19 +32,7 @@ function Form({ formRef }) {
     }
   };
 
-  const validSchema = yup.object().shape({
-    fName: yup.string().required('Name is required'),
-    email: yup.string().email('Invalid email'),
-    phone: yup
-      .string()
-      .min(10, 'Phone number is too short')
-      .max(13, 'phone number is too long')
-      .matches(
-        /^\+?\d+$/,
-        'Phone number must only include numbers and + (optional)'
-      )
-      .required('Phone number is required'),
-  });
+
   const renderForm = ({ isValid, setFieldValue }) => {
     const handleClear = (field) => {
       setFieldValue(field, '');
